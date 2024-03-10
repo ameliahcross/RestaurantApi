@@ -13,23 +13,23 @@ namespace RestaurantApi.Infrastructure.Identity.Seeds
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            ApplicationUser defaultUser = new();
-            defaultUser.UserName = "superadminuser";
-            defaultUser.Email = "superadminuser@email.com";
-            defaultUser.FirstName = "John";
-            defaultUser.LastName = "Doe";
-            defaultUser.EmailConfirmed = true;
-            defaultUser.PhoneNumberConfirmed = true;
+            ApplicationUser defaultSuperAdminUser = new();
+            defaultSuperAdminUser.UserName = "superadminuser";
+            defaultSuperAdminUser.Email = "superadminuser@email.com";
+            defaultSuperAdminUser.FirstName = "John";
+            defaultSuperAdminUser.LastName = "Doe";
+            defaultSuperAdminUser.EmailConfirmed = true;
+            defaultSuperAdminUser.PhoneNumberConfirmed = true;
 
-            if(userManager.Users.All(u=> u.Id != defaultUser.Id))
+            if(userManager.Users.All(u=> u.Id != defaultSuperAdminUser.Id))
             {
-                var user = await userManager.FindByEmailAsync(defaultUser.Email);
+                var user = await userManager.FindByEmailAsync(defaultSuperAdminUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "123Pa$$word!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Mesero.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.SuperAdmin.ToString());
+                    await userManager.CreateAsync(defaultSuperAdminUser, "123Pa$$word!");
+                    await userManager.AddToRoleAsync(defaultSuperAdminUser, Roles.Mesero.ToString());
+                    await userManager.AddToRoleAsync(defaultSuperAdminUser, Roles.Admin.ToString());
+                    await userManager.AddToRoleAsync(defaultSuperAdminUser, Roles.SuperAdmin.ToString());
                 }
             }
          

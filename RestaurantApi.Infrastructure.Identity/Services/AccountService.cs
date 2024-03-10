@@ -43,7 +43,7 @@ namespace RestaurantApi.Infrastructure.Identity.Services
                 response.Error = $"Invalid credentials for {request.Email}";
                 return response;
             }
-            // verifica si el usuario confirmó su corre o
+            // verifica si el usuario confirmó su correo
             if (!user.EmailConfirmed)
             {
                 response.HasError = true;
@@ -96,20 +96,25 @@ namespace RestaurantApi.Infrastructure.Identity.Services
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                UserName = request.UserName
+                UserName = request.UserName,
+                EmailConfirmed = true // QUITAR ESTA PROPIEDAD CUANDO NECESITE ACTIVAR CUENTAS POR LINK ENVIADO A CORREO
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, Roles.Mesero.ToString());
-                var verificationUrl = await SendVerificationEmailUrl(user, origin);
-                await _emailService.SendAsync(new Core.Application.DTOs.Email.EmailRequest()
-                {
-                    To = user.Email,
-                    Body = $"Please confirm your account visiting this URL {verificationUrl}",
-                    Subject = "Confirm registration"
-                });
+
+                // DESCOMENTAR CUANDO NECESITE LA ACTIVACION DE CUENTA POR CORREO, YA QUE AHORA MISMO SE ESTAN
+                // RGISTRANDO ACTIVOS LOS USUARIOS. NO REQUIEREN LINK DE ACTIVACION
+
+                //var verificationUrl = await SendVerificationEmailUrl(user, origin);
+                //await _emailService.SendAsync(new Core.Application.DTOs.Email.EmailRequest()
+                //{
+                //    To = user.Email,
+                //    Body = $"Please confirm your account visiting this URL {verificationUrl}",
+                //    Subject = "Confirm registration"
+                //});
             }
             else
             {
@@ -151,7 +156,7 @@ namespace RestaurantApi.Infrastructure.Identity.Services
             }
             else
             {
-                return $"An error occurred wgile confirming {user.Email}.";
+                return $"An error occurred while confirming {user.Email}.";
             }
         }
 

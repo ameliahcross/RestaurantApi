@@ -11,7 +11,5 @@ namespace RestaurantApi.Core.Application.Enums
         SuperAdmin,
         Admin,
         Mesero
-        
-       
     }
 }

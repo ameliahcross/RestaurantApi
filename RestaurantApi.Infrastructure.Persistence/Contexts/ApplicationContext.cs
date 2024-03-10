@@ -1,20 +1,19 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
+using RestaurantApi.Core.Domain.Entities;
 
 namespace RestaurantApi.Infrastructure.Persistence.Contexts
 {
 	public class ApplicationContext : DbContext
-
     {
-        //public DbSet<User> Users { get; set; }
-
-
+        public DbSet<Plato> Platos { get; set; }
+        public DbSet<Orden> Ordenes { get; set; }
+        public DbSet<Mesa> Mesas { get; set; }
+        public DbSet<Ingrediente> Ingredientes { get; set; }
+        
         // constructor
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
-        {
-
-        }
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,57 +21,93 @@ namespace RestaurantApi.Infrastructure.Persistence.Contexts
             base.OnModelCreating(modelBuilder);
 
             #region tables
-            //modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<Plato>().ToTable("Platos");
+            modelBuilder.Entity<Orden>().ToTable("Ordenes");
+            modelBuilder.Entity<Mesa>().ToTable("Mesas");
+            modelBuilder.Entity<Ingrediente>().ToTable("Ingredientes");
             #endregion
 
-            #region primary-keys
-            //modelBuilder.Entity<User>().HasKey(user => user.Id);
+            #region PK
+            modelBuilder.Entity<Plato>().HasKey(plato => plato.Id);
+            modelBuilder.Entity<Orden>().HasKey(orden => orden.Id);
+            modelBuilder.Entity<Mesa>().HasKey(mesa => mesa.Id);
+            modelBuilder.Entity<Ingrediente>().HasKey(ing => ing.Id);
             #endregion
 
             #region relationships
-            // User con Post
-            //modelBuilder.Entity<User>()
-            //   .HasMany(u => u.Posts)
-            //   .WithOne(p => p.User)
-            //   .HasForeignKey(p => p.UserId)
-            //   .OnDelete(DeleteBehavior.Cascade);
+            // Orden con Mesa
+            modelBuilder.Entity<Orden>()
+                .HasOne<Mesa>()
+                .WithMany()
+                .HasForeignKey(o => o.MesaId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Orden con Plato
+            modelBuilder.Entity<Orden>()
+                .HasMany(o => o.Platos)
+                .WithMany(p => p.Ordenes);
+
+            // Plato con Ingrediente
+            modelBuilder.Entity<Plato>()
+                .HasMany(p => p.Ingredientes)
+                .WithMany(i => i.Platos);
             #endregion
 
-           #region property configurations
-                #region User
-                //modelBuilder.Entity<User>(entity =>
-                //{
-                //    entity.Property(e => e.Name)
-                //            .IsRequired()
-                //            .HasMaxLength(100);
+            #region property configurations
 
-                //    entity.Property(e => e.LastName)
-                //             .IsRequired()
-                //             .HasMaxLength(100);
+            #region Mesa
+            modelBuilder.Entity<Mesa>(entity =>
+            {
+                entity.Property(e => e.Capacidad)
+                         .IsRequired();
 
-                //    entity.Property(e => e.Phone)
-                //            .IsRequired()
-                //            .HasMaxLength(15);
+                entity.Property(e => e.Descripcion)
+                         .IsRequired()
+                         .HasMaxLength(100);
 
-                //    entity.Property(e => e.ImageUrl);
+                entity.Property(e => e.Estado)
+                        .IsRequired();
+            });
+            #endregion
 
-                //    entity.Property(e => e.Email)
-                //            .IsRequired()
-                //            .HasMaxLength(100);
+            #region Plato
+            modelBuilder.Entity<Plato>(entity =>
+            {
+                entity.Property(e => e.Nombre)
+                         .IsRequired()
+                         .HasMaxLength(100);
 
-                //    entity.Property(e => e.UserName)
-                //            .IsRequired()
-                //            .HasMaxLength(50);
+                entity.Property(e => e.Precio)
+                         .IsRequired()
+                         .HasColumnType("decimal(18,2)");
 
-                //    entity.Property(e => e.Password)
-                //            .IsRequired();
+                entity.Property(e => e.Porcion)
+                         .IsRequired();
 
-                //    entity.Property(e => e.IsActive)
-                //            .IsRequired();
+            });
+            #endregion
 
-                //    entity.Property(e => e.ActivationToken);
-                //});
-                 #endregion
+            #region Orden
+            modelBuilder.Entity<Orden>(entity =>
+            {
+                entity.Property(e => e.Subtotal)
+                         .IsRequired()
+                         .HasColumnType("decimal(18,2)"); 
+
+                entity.Property(e => e.Descripcion)
+                         .HasMaxLength(500); 
+
+            });
+            #endregion
+
+            #region Ingrediente
+            modelBuilder.Entity<Ingrediente>(entity =>
+            {
+                entity.Property(e => e.Nombre)
+                         .IsRequired()
+                         .HasMaxLength(100);
+            });
+            #endregion
 
             #endregion
         }

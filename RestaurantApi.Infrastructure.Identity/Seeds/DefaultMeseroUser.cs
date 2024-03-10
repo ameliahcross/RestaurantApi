@@ -32,11 +32,6 @@ namespace RestaurantApi.Infrastructure.Identity.Seeds
             }
 
 
-
-
-
-
-
         }
     }
 }
