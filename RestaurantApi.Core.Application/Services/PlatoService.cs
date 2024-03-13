@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using RestaurantApi.Core.Application.Dtos.Account;
 using RestaurantApi.Core.Application.Helpers;
 using RestaurantApi.Core.Application.Interfaces.Repositories;
 using RestaurantApi.Core.Application.Interfaces.Services;
-using RestaurantApi.Core.Application.ViewModels.Ingrediente;
 using RestaurantApi.Core.Application.ViewModels.Plato;
 using RestaurantApi.Core.Domain.Entities;
 

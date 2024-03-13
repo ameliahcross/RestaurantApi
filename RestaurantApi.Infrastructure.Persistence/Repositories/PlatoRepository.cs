@@ -3,11 +3,6 @@ using RestaurantApi.Core.Application.Interfaces.Repositories;
 using RestaurantApi.Core.Application.ViewModels.Plato;
 using RestaurantApi.Core.Domain.Entities;
 using RestaurantApi.Infrastructure.Persistence.Contexts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantApi.Infrastructure.Persistence.Repositories
 {
