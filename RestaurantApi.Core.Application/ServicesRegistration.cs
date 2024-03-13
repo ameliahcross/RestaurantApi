@@ -11,6 +11,11 @@ namespace RestaurantApi.Core.Application
 		public static void AddApplicationLayer(this IServiceCollection services)
 		{
             #region "Services"
+            services.AddTransient<IIngredienteService, IngredienteService>();
+            services.AddTransient<IMesaService, MesaService>();
+            services.AddTransient<IOrdenService, OrdenService>();
+            services.AddTransient<IPlatoService, PlatoService>();
+
             services.AddTransient<IUserService, UserService>();
             services.AddTransient(typeof(IGenericService<,,>), typeof(GenericService<,,>));
 

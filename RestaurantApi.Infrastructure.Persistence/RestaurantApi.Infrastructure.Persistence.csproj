@@ -24,4 +24,8 @@
     <ProjectReference Include="..\RestaurantApi.Core.Domain\RestaurantApi.Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

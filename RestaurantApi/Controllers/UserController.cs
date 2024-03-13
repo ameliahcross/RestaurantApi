@@ -17,13 +17,13 @@ namespace WebApp.RestaurantApi.Controllers
             _userService = userService;
         }
 
-        [ServiceFilter(typeof(LoginAuthorize))]
+        [ServiceFilter(typeof(LoginAuthorize))] // este filtro hace que si hay sesión iniciada, regirija
         public IActionResult Index()
         {
             return View(new LoginViewModel());
         }
 
-        [ServiceFilter(typeof(LoginAuthorize))]
+        [ServiceFilter(typeof(LoginAuthorize))]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel vm)
         {

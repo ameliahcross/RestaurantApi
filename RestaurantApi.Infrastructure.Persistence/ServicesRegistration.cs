@@ -27,6 +27,10 @@ namespace RestaurantApi.Infrastructure.Persistence
 
             #region "Repositories"
             //services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IIngredienteRepository, IngredienteRepository>();
+            services.AddTransient<IMesaRepository, MesaRepository>();
+            services.AddTransient<IOrdenRepository, OrdenRepository>();
+            services.AddTransient<IPlatoRepository, PlatoRepository>();
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             #endregion
         }

@@ -37,10 +37,10 @@ namespace RestaurantApi.Infrastructure.Persistence.Contexts
             #region relationships
             // Orden con Mesa
             modelBuilder.Entity<Orden>()
-                .HasOne<Mesa>()
+                .HasOne(o => o.Mesa)
                 .WithMany()
                 .HasForeignKey(o => o.MesaId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Orden con Plato
             modelBuilder.Entity<Orden>()

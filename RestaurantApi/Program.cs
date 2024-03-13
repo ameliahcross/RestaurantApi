@@ -11,14 +11,14 @@ using WebApp.RestaurantApi.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddApplicationLayer();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddPersistenceLayer(builder.Configuration);
-builder.Services.AddIdentityInfrasastructure(builder.Configuration);
-builder.Services.AddSharedInfrastructure(builder.Configuration);
-builder.Services.AddLogging();
 builder.Services.AddSession();
+builder.Services.AddPersistenceLayer(builder.Configuration);
+builder.Services.AddApplicationLayer();
+builder.Services.AddSharedInfrastructure(builder.Configuration);
+builder.Services.AddIdentityInfrasastructure(builder.Configuration);
+builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddLogging();
 builder.Services.AddScoped<LoginAuthorize>();
 builder.Services.AddTransient<ValidateUserSession, ValidateUserSession>();
 

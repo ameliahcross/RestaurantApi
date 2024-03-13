@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantApi.Core.Application.Interfaces.Services
 {
-    public interface IUserService
+    public interface IUserService 
     {
         Task<string> ConfirmEmailAsync(string userId, string token);
         Task<ForgotPasswordResponse> ForgotPasswordAsync(ForgotPasswordViewModel vm, string origin);
