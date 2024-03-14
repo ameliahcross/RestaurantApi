@@ -25,6 +25,10 @@ namespace RestaurantApi.Core.Application.Services
             userViewModel = _httpContextAccessor.HttpContext.Session.Get<AuthenticationResponse>("user");
         }
 
-
+        public async Task<MesaViewModel> ChangeMesaStatusAsync(int mesaId, EstadoMesa newStatus)
+        {
+            var mesa = await _mesaRepository.ChangeMesaStatus(mesaId, newStatus);
+            return _mapper.Map<MesaViewModel>(mesa);
+        }
     }
 }

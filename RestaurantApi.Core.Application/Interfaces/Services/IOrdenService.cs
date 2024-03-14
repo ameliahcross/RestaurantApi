@@ -1,15 +1,16 @@
 ﻿using RestaurantApi.Core.Application.ViewModels.Orden;
 using RestaurantApi.Core.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantApi.Core.Application.Interfaces.Services
 {
     public interface IOrdenService : IGenericService<SaveOrdenViewModel, OrdenViewModel, Orden>
     {
-        Task<List<OrdenViewModel>> GetAllOrdenesByIdWithIncludeAsync(int ordenId);
+        Task<OrdenViewModel> GetOrdenByIdWithIncludeAsync(int ordenId);
+        Task<OrdenViewModel> GetOrdenByIdTableId(int tableId);
+        Task<SaveOrdenViewModel> AddOrdenWithPlatos(SaveOrdenViewModel saveOrdenVm);
+        Task<OrdenViewModel> UpdateOrden(UpdateOrdenViewModel viewModel, int id);
+        Task<bool> DeleteOrdenWithPlatos(int orderId);
+        Task<List<OrdenViewModel>> GetAllWithIncludeAsync();
     }
+
 }

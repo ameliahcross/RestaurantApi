@@ -1,14 +1,14 @@
 ﻿using RestaurantApi.Core.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantApi.Core.Application.Interfaces.Repositories
 {
     public interface IOrdenRepository : IGenericRepository<Orden>
     {
-        Task<List<Orden>> GetAllWithIncludeAsync(int ordenId);
+        Task<List<Orden>> GetAllWithIncludeAsync();
+        Task<Orden> GetOrdenByTableId(int tableId);
+        Task<Orden> UpdateOrdenWithPlatos(int id, Orden updatedOrden, ICollection<int> platosIds);
+        Task<Orden> AddOrdenWithPlatos(Orden orden, IEnumerable<int> platosIds);
+        Task<Orden> GetOrdenById(int id);
+        Task DeleteOrdenWithPlatos(int orderId);
     }
 }

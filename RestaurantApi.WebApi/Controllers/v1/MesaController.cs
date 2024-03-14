@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantApi.Core.Application.Interfaces.Services;
 using RestaurantApi.Core.Application.ViewModels.Mesa;
+using RestaurantApi.Core.Application.ViewModels.Orden;
+using RestaurantApi.Core.Domain.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace RestaurantApi.WebApi.Controllers.v1
 {
@@ -9,10 +12,12 @@ namespace RestaurantApi.WebApi.Controllers.v1
     public class MesaController: BaseApiController
     {
         private readonly IMesaService _mesaService;
+        private readonly IOrdenService _ordenService;
 
-        public MesaController(IMesaService mesaService)
+        public MesaController(IMesaService mesaService, IOrdenService ordenService)
         {
             _mesaService = mesaService;
+            _ordenService = ordenService;
         }
 
         // LISTADO DE MESAS
@@ -107,9 +112,59 @@ namespace RestaurantApi.WebApi.Controllers.v1
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-
-
         }
+
+        // OBTENER LA ORDEN DE LA MESA
+        [HttpGet("TableOrder/{tableId}")]
+        [SwaggerOperation (Summary = "Obtener la orden de la mesa")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrdenViewModel))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetTableOrder(int tableId)
+        {
+            try
+            {
+                var tableOrder = await _ordenService.GetOrdenByIdTableId(tableId);
+                if (tableOrder == null)
+                {
+                    return NoContent();
+                }
+                return Ok(tableOrder);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
+        // CAMBIAR ESTATUS DE LA MESA
+        [HttpPatch("ChangeStatus/{mesaId}")] //hay que indicar que la URL debe venir con el id a buscar
+        [SwaggerOperation(Summary = "Cambiar estatus de la mesa")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MesaViewModel))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangeStatus(int mesaId, [FromBody] EstadoMesa newStatus)
+        {
+            try
+            {
+                var updatedMesa = await _mesaService.ChangeMesaStatusAsync(mesaId, newStatus);
+                if (updatedMesa == null)
+                {
+                    return NoContent();
+                }
+                return Ok(updatedMesa);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
 
 
 

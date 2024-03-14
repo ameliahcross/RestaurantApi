@@ -55,13 +55,21 @@ namespace RestaurantApi.Core.Application.Mappings
             #endregion
 
             #region Orden
-                CreateMap<Orden, OrdenViewModel>()
-                    .ForMember(dest => dest.Platos, opt => opt.Ignore())
-                    .ReverseMap();
+            CreateMap<Orden, OrdenViewModel>()
+                .ForMember(dest => dest.Platos, opt => opt.MapFrom(src => src.Platos))
+                .ReverseMap();
 
-                CreateMap<Orden, SaveOrdenViewModel>()
-                    .ForMember(dest => dest.Platos, opt => opt.Ignore())
-                    .ReverseMap();
+            CreateMap<Orden, SaveOrdenViewModel>()
+                .ForMember(dest => dest.PlatosIds, opt => opt.MapFrom(src => src.Platos.Select(p => p.Id)))
+                .ReverseMap()
+                .ForMember(dest => dest.Platos, opt => opt.Ignore())
+                .ForMember(src => src.Estado, opt => opt.Ignore());
+
+            CreateMap<Orden, UpdateOrdenViewModel>()
+                .ForMember(dest => dest.PlatosIds, opt => opt.MapFrom(src => src.Platos.Select(p => p.Id)))
+                .ReverseMap()
+                .ForPath(src => src.Platos, opt => opt.Ignore()); 
+
             #endregion
 
             #region Plato

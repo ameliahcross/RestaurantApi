@@ -34,7 +34,7 @@ namespace RestaurantApi.Infrastructure.Persistence.Repositories
                 }
                 else
                 {
-                    throw new InvalidOperationException($"No se puede realizar la operación porque el ingrediente con el ID {ingredienteId} no fue encontrado.");
+                    throw new InvalidOperationException($"No se puede realizar la operación porque el ingrediente con el Id {ingredienteId} no fue encontrado.");
                 }
             }
 

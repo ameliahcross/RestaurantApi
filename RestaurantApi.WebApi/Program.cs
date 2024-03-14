@@ -2,7 +2,6 @@ using RestaurantApi.Infrastructure.Persistence;
 using RestaurantApi.Core.Application;
 using RestaurantApi.Infrastructure.Shared;
 using RestaurantApi.Infrastructure.Identity;
-using RestaurantApi.WebApi;
 using RestaurantApi.WebApi.Extensions;
 using StockApp.WebApi.Extensions;
 
@@ -22,6 +21,7 @@ builder.Services.AddSwaggerExtension();
 builder.Services.AddApiVersioningExtension();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+builder.Services.AddSwaggerGen(c => { c.EnableAnnotations(); });
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

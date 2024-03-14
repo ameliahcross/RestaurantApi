@@ -2,11 +2,6 @@
 using RestaurantApi.Core.Application.Interfaces.Repositories;
 using RestaurantApi.Core.Domain.Entities;
 using RestaurantApi.Infrastructure.Persistence.Contexts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantApi.Infrastructure.Persistence.Repositories
 {
@@ -16,6 +11,19 @@ namespace RestaurantApi.Infrastructure.Persistence.Repositories
         public MesaRepository(ApplicationContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<Mesa> ChangeMesaStatus(int mesaId, EstadoMesa newStatus)
+        {
+            var mesa = await _dbContext.Mesas.FindAsync(mesaId);
+            if (mesa == null)
+            {
+                throw new KeyNotFoundException($"No se encontró la mesa con ID {mesaId}.");
+
+            }
+            mesa.Estado = newStatus;
+            await _dbContext.SaveChangesAsync();
+            return mesa;
         }
     }
 }
