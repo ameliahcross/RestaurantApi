@@ -41,7 +41,8 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-
+        Console.WriteLine($"Error seeding data: {ex.Message}");
+        Console.WriteLine(ex.StackTrace);
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantApi.Core.Application.Interfaces.Services;
 using RestaurantApi.Core.Application.ViewModels.Ingrediente;
 
@@ -6,6 +7,7 @@ namespace RestaurantApi.WebApi.Controllers.v1
 {
     // Heredar de BaseApiController y especificar la versión de la api que estoy usando
     [ApiVersion("1.0")]
+    [Authorize (Roles = "Admin")]
     public class IngredienteController : BaseApiController
     {
         private readonly IIngredienteService _ingredienteService;

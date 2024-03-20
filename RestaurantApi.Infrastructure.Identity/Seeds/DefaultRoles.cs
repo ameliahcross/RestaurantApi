@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RestaurantApi.Core.Application.Enums;
-using RestaurantApi.Infrastructure.Identity;
 using RestaurantApi.Infrastructure.Identity.Entities;
 
 namespace RestaurantApi.Infrastructure.Identity.Seeds
@@ -13,6 +12,6 @@ namespace RestaurantApi.Infrastructure.Identity.Seeds
             await roleManager.CreateAsync(new IdentityRole(Roles.SuperAdmin.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Mesero.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-         }
+        }
     }
 }

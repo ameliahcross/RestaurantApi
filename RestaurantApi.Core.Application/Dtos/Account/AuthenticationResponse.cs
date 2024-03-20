@@ -1,4 +1,6 @@
-﻿ 
+﻿
+
+using System.Text.Json.Serialization;
 
 namespace RestaurantApi.Core.Application.Dtos.Account
 {
@@ -11,5 +13,9 @@ namespace RestaurantApi.Core.Application.Dtos.Account
         public bool IsVerified { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
+        public string JWToken { get; set; }
+        [JsonIgnore]
+        public string RefreshToken { get; set; }
+
     }
 }

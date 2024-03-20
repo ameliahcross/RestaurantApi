@@ -8,6 +8,13 @@ using Microsoft.AspNetCore.Identity;
 using RestaurantApi.Infrastructure.Identity.Entities;
 using RestaurantApi.Application.Interfaces.Services;
 using RestaurantApi.Infrastructure.Identity.Services;
+using RestaurantApi.Core.Domain.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using RestaurantApi.Core.Application.Dtos.Account;
+using System.Text;
 
 namespace RestaurantApi.Infrastructure.Identity
 {
@@ -41,7 +48,53 @@ namespace RestaurantApi.Infrastructure.Identity
                 options.AccessDeniedPath = "/User/AccessDenied";
             });
 
-            services.AddAuthentication();
+            services.Configure<JWTSettings>(config.GetSection("JWTSettings")); // JWTSettings es el nombre que tiene la configuracion en appsettings.json
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidIssuer = config["JWTSettings:Issuer"],
+                    ValidAudience = config["JWTSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWTSettings:Key"]))
+                };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnAuthenticationFailed = c =>
+                    {
+                        c.NoResult();
+                        c.Response.StatusCode = 500;
+                        c.Response.ContentType = "text/plain";
+                        return c.Response.WriteAsync(c.Exception.ToString());
+                    },
+                    OnChallenge = c => // cuando manden un token no valido y que no tiene autorizacion
+                    {
+                        c.HandleResponse();
+                        c.Response.StatusCode = 401;
+                        c.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject(new JwtResponse { HasError = true, Error = "You are not Authorized" });
+                        return c.Response.WriteAsync(result);
+                    },
+                    OnForbidden = c =>
+                    {
+                        c.Response.StatusCode = 403;
+                        c.Response.ContentType = "application/json";
+                        var result = JsonConvert.SerializeObject(new JwtResponse { HasError = true, Error = "You are not Authorized to access this resource" });
+                        return c.Response.WriteAsync(result);
+                    }
+                };
+            });
             #endregion
 
             #region Services

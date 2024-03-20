@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RestaurantApi.Core.Application.Enums;
 using RestaurantApi.Infrastructure.Identity.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantApi.Infrastructure.Identity.Seeds
 {
@@ -27,7 +22,6 @@ namespace RestaurantApi.Infrastructure.Identity.Seeds
                 if (user == null)
                 {
                     await userManager.CreateAsync(defaultAdminUser, "123Pa$$word!");
-                    await userManager.AddToRoleAsync(defaultAdminUser, Roles.Mesero.ToString());
                     await userManager.AddToRoleAsync(defaultAdminUser, Roles.Admin.ToString());
                 }
             }

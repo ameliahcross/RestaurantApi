@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantApi.Core.Application.Interfaces.Services;
-using RestaurantApi.Core.Application.ViewModels.Mesa;
 using RestaurantApi.Core.Application.ViewModels.Orden;
 
 namespace RestaurantApi.WebApi.Controllers.v1
 {
     // Heredar de BaseApiController y especificar la versión de la api que estoy usando
     [ApiVersion("1.0")]
+   
     public class OrdenController: BaseApiController
     {
         private readonly IOrdenService _ordenService;
@@ -17,6 +18,7 @@ namespace RestaurantApi.WebApi.Controllers.v1
         }
 
         // LISTADO DE ORDENES
+        [Authorize(Roles = "Mesero")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrdenViewModel))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

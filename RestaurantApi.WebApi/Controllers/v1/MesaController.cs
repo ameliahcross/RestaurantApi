@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantApi.Core.Application.Interfaces.Services;
 using RestaurantApi.Core.Application.ViewModels.Mesa;
 using RestaurantApi.Core.Application.ViewModels.Orden;
@@ -21,6 +22,7 @@ namespace RestaurantApi.WebApi.Controllers.v1
         }
 
         // LISTADO DE MESAS
+        [Authorize(Roles = "Admin, Mesero")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MesaViewModel))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -43,6 +45,7 @@ namespace RestaurantApi.WebApi.Controllers.v1
         }
 
         // OBTENER MESA POR ID
+        [Authorize(Roles = "Admin, Mesero")]
         [HttpGet("{id}")] // hay que indicar que la URL debe venir con el id a buscar
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SaveMesaViewModel))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -65,6 +68,7 @@ namespace RestaurantApi.WebApi.Controllers.v1
         }
 
         // CREAR UNA MESA
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,6 +96,7 @@ namespace RestaurantApi.WebApi.Controllers.v1
         }
 
         // ACTUALIZAR UNA MESA
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]  // hay que indicar que la URL debe venir con el id a actualizar
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -115,6 +120,7 @@ namespace RestaurantApi.WebApi.Controllers.v1
         }
 
         // OBTENER LA ORDEN DE LA MESA
+        [Authorize(Roles = "Mesero")]
         [HttpGet("TableOrder/{tableId}")]
         [SwaggerOperation (Summary = "Obtener la orden de la mesa")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(OrdenViewModel))]
@@ -139,6 +145,7 @@ namespace RestaurantApi.WebApi.Controllers.v1
 
 
         // CAMBIAR ESTATUS DE LA MESA
+        [Authorize(Roles = "Mesero")]
         [HttpPatch("ChangeStatus/{mesaId}")] //hay que indicar que la URL debe venir con el id a buscar
         [SwaggerOperation(Summary = "Cambiar estatus de la mesa")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MesaViewModel))]
